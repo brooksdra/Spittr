@@ -36,10 +36,10 @@ public class SpitterController {
 		return "redirect:/spitter/" + spitter.getUsername();
 	}
 	
-	@RequestMapping(value = "/spittlers", method = POST)
+	@RequestMapping(value = "/spittlers", method = GET)
 	public String showSpitters(Model model) {
-		List<Spitter> spittlers = spitterRepository.findAll();
-		model.addAttribute("spittlerList", spittlers);
+		List<Spitter> spitters = spitterRepository.findAll();
+		model.addAttribute("spitterList", spitters);
 		return "spitters";
 	}
 
