@@ -5,7 +5,7 @@
 <html>
 <head>
 	<title>Spittr</title>
-	<link rel="stylesheet" type="text/css"	href="<c:url value="/images/style.css" />" >
+	<link rel="stylesheet" type="text/css"	href="<c:url value="/styles/style.css" />" >
 </head>
 <body>
 	<div id="header">
