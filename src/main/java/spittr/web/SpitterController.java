@@ -5,17 +5,21 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import spittr.entities.Spitter;
+import spittr.entities.Spittle;
 import spittr.repositories.SpitterRepository;
 
 @Controller
-@RequestMapping("/spitter")
+@RequestMapping("/spitters")
 public class SpitterController {
 
 	private SpitterRepository spitterRepository;
@@ -25,24 +29,28 @@ public class SpitterController {
 		this.spitterRepository = spitterRepository;
 	}
 
+	@RequestMapping(method = GET)
+	public List<Spitter> showSpitters(Model model) {
+		return spitterRepository.findAll();
+	}
+
 	@RequestMapping(value = "/register", method = GET)
-	public String showRegistrationForm() {
+	public String showRegistrationForm(Model model) {
+		model.addAttribute(new Spitter());
 		return "registerForm";
 	}
 
 	@RequestMapping(value = "/register", method = POST)
-	public String processRegistration(Spitter spitter) {
+	public String processRegistration(@Valid Spitter spitter, Errors errors) {
+		
+		if (errors.hasErrors()) {
+			return "registerForm";
+		}
+		
 		spitterRepository.save(spitter);
-		return "redirect:/spitter/" + spitter.getUsername();
+		return "redirect:/spitters/" + spitter.getUsername();
 	}
 	
-	@RequestMapping(value = "/spittlers", method = GET)
-	public String showSpitters(Model model) {
-		List<Spitter> spitters = spitterRepository.findAll();
-		model.addAttribute("spitterList", spitters);
-		return "spitters";
-	}
-
 	@RequestMapping(value = "/{username}", method = GET)
 	public String showSpitterProfile(@PathVariable String username, Model model) {
 		Spitter spitter = spitterRepository.findByUsername(username);

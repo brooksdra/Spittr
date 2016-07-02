@@ -21,27 +21,27 @@ public class Spitter {
 	private Long id;
 
 	@NotNull
-	@Size(min = 5, max = 16)
+	@Size(min = 5, max = 16, message="{username.size}")
 	@Column(name = "username", nullable = false, unique = true, length = 16)
 	private String username;
 
 	@NotNull
-	@Size(min = 5, max = 25)
+	@Size(min=5, max=25, message="{password.size}")
 	@Column(name = "password", nullable = false, length = 25)
 	private String password;
 
 	@NotNull
-	@Size(min = 2, max = 30)
+	@Size(min=2, max=30, message="{firstName.size}")
 	@Column(name = "firstName", nullable = false, length = 30)
 	private String firstName;
 
 	@NotNull
-	@Size(min = 2, max = 30)
+	@Size(min=2, max=30, message="{lastName.size}")
 	@Column(name = "lastName", nullable = false, length = 30)
 	private String lastName;
 
 	@NotNull
-	@Email
+	@Email(message="{email.valid}")
 	@Column(name = "email", nullable = false, length = 128)
 	private String email;
 

@@ -31,8 +31,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @PropertySource("classpath:/config/databaseConnection.properties")
 @EnableJpaRepositories(basePackages = "spittr.repositories")
 @EnableTransactionManagement
-public class AppConfig {
-private static final Logger LOG = Logger.getLogger(AppConfig.class);
+public class DataConfig {
+private static final Logger LOG = Logger.getLogger(DataConfig.class);
     
     private final String schema = "spittr";
 

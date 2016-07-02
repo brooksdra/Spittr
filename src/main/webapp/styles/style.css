@@ -2,6 +2,23 @@ body {
 	font-family: sans-serif;
 }
 
+span.error {
+color: red;
+}
+
+div.errors {
+	background-color: #ffcccc;
+	border: 2px solid red;
+}
+
+label.error {
+	color: red;
+}
+
+input.error {
+	background-color: #ffcccc;
+}
+
 .spittleList h1 {
 	font-size: 16pt;
 }
