@@ -17,6 +17,9 @@
 		<sf:label path="email" cssErrorClass="error">Email</sf:label>: <sf:input path="email" type="email" /><sf:errors path="email" cssClass="error" /><br/>
 		<sf:label path="username" cssErrorClass="error">Username</sf:label>: <sf:input path="username" /><sf:errors path="username" cssClass="error" /><br/>
 		<sf:label path="password" cssErrorClass="error">Password</sf:label>: <sf:password path="password" /><sf:errors path="password" cssClass="error" /><br/>
+		<sf:label path="profilePicture" cssErrorClass="error">Profile Picture</sf:label>: 
+			<sf:input path="profilePicture" type="file" /><sf:errors path="profilePicture" cssClass="error" /><br/>
+		
 		<input type="submit" value="Register" />
 	</sf:form>
 </body>

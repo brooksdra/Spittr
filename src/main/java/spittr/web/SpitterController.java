@@ -3,8 +3,10 @@ package spittr.web;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.Part;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 
 import spittr.entities.Spitter;
-import spittr.entities.Spittle;
 import spittr.repositories.SpitterRepository;
 
 @Controller
@@ -41,12 +43,21 @@ public class SpitterController {
 	}
 
 	@RequestMapping(value = "/register", method = POST)
-	public String processRegistration(@Valid Spitter spitter, Errors errors) {
+	public String processRegistration(@RequestPart() Part profilePicture, @Valid Spitter spitter, Errors errors) {
 		
 		if (errors.hasErrors()) {
 			return "registerForm";
 		}
 		
+		try {
+			profilePicture.write("/data/spittr/" + profilePicture.getSubmittedFileName());
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		spitterRepository.save(spitter);
 		return "redirect:/spitters/" + spitter.getUsername();
 	}

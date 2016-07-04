@@ -3,6 +3,7 @@ package spittr.config;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -32,12 +33,23 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableJpaRepositories(basePackages = "spittr.repositories")
 @EnableTransactionManagement
 public class DataConfig {
-private static final Logger LOG = Logger.getLogger(DataConfig.class);
+	
+	private static final Logger LOG = Logger.getLogger(DataConfig.class);
     
     private final String schema = "spittr";
 
 	@Autowired
 	private Environment env;
+	
+	public DataConfig() {
+		super();
+		LOG.info("|-drb-| == > Constructing...");
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		LOG.info("|-drb-| == > PostConstructing...");
+	}
 
 	@Bean
 	public DataSource dataSource() {
@@ -58,10 +70,10 @@ private static final Logger LOG = Logger.getLogger(DataConfig.class);
             //dataSource.setCheckoutTimeout(Integer.parseInt(env.getProperty("pool." + schema + ".checkout.timeout")));
         }
         catch (PropertyVetoException e) {
-            LOG.warn("|| == > Connecting " + schema + " dataSource failed!");
+            LOG.warn("|-drb-| == > Connecting " + schema + " dataSource failed!");
             e.printStackTrace();
         }
-        LOG.info("|| == > Connecting " + schema + " dataSource to " + dataSource.getJdbcUrl() + " as " + dataSource.getUser());
+        LOG.info("|-drb-| == > Connecting " + schema + " dataSource to " + dataSource.getJdbcUrl() + " as " + dataSource.getUser());
         return dataSource;
 	}
 
