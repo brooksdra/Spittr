@@ -50,7 +50,11 @@ public class SpittleController {
 
 	@RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)
 	public String spittle(@PathVariable("spittleId") long spittleId, Model model) {
-		model.addAttribute("spittle", spittleRepository.findOne(spittleId));
+		Spittle spittle = spittleRepository.findOne(spittleId);
+		if (spittle == null) {
+			throw new SpittleNotFoundException();
+		}
+		model.addAttribute("spittle", spittle);
 		return "spittle";
 	}
 
@@ -60,4 +64,10 @@ public class SpittleController {
 				.save(new Spittle(null, form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
 		return "redirect:/spittles";
 	}
+	
+	//Moved to AppWideExceptionHandler
+//	@ExceptionHandler(DuplicateSpittleException.class)
+//	public String handleDuplicateSpittle() {
+//	return "error/duplicate";
+//	}
 }
