@@ -43,7 +43,7 @@ public class SpitterController {
 	}
 
 	@RequestMapping(value = "/register", method = POST)
-	public String processRegistration(@RequestPart() Part profilePicture, @Valid Spitter spitter, Errors errors) {
+	public String processRegistration(@RequestPart() Part profilePicture, @Valid Spitter spitter, Errors errors, Model model) {
 		
 		if (errors.hasErrors()) {
 			return "registerForm";
@@ -59,7 +59,9 @@ public class SpitterController {
 			e.printStackTrace();
 		}
 		spitterRepository.save(spitter);
-		return "redirect:/spitters/" + spitter.getUsername();
+		model.addAttribute("username", spitter.getUsername());
+		model.addAttribute("spitterId", spitter.getId());
+		return "redirect:/spitters/{username}";
 	}
 	
 	@RequestMapping(value = "/{username}", method = GET)
