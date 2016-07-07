@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
-@ComponentScan(basePackages = "spittr")
+@ComponentScan(basePackages = {"spittr.entities" , "spittr.repositories"})
 @PropertySource("classpath:/config/databaseConnection.properties")
 @EnableJpaRepositories(basePackages = "spittr.repositories")
 @EnableTransactionManagement

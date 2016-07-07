@@ -7,6 +7,6 @@ public class ServletInitializer /*extends SpringBootServletInitializer*/ {
 
 	//@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(SpittererApplication.class);
+		return application.sources(SpittrApplication.class);
 	}
 }

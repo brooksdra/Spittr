@@ -7,9 +7,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = SpittererApplication.class)
+@SpringApplicationConfiguration(classes = SpittrApplication.class)
 @WebAppConfiguration
-public class SpittererApplicationTests {
+public class SpittrApplicationTests {
 
 	@Test
 	public void contextLoads() {
