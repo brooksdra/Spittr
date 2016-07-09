@@ -18,18 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import spittr.config.SecurityConfig;
+import spittr.entities.Authorities;
 import spittr.entities.Spitter;
+import spittr.repositories.AuthoritiesRepository;
 import spittr.repositories.SpitterRepository;
 
 @Controller
 @RequestMapping("/spitters")
 public class SpitterController {
 
-	private SpitterRepository spitterRepository;
+	private SpitterRepository spitterRepository;	
+	private AuthoritiesRepository authoritiesRepository;
 
 	@Autowired
-	public SpitterController(SpitterRepository spitterRepository) {
+	public SpitterController(SpitterRepository spitterRepository, AuthoritiesRepository authoritiesRepository) {
 		this.spitterRepository = spitterRepository;
+		this.authoritiesRepository = authoritiesRepository;
 	}
 
 	@RequestMapping(method = GET)
@@ -44,22 +49,32 @@ public class SpitterController {
 	}
 
 	@RequestMapping(value = "/register", method = POST)
-	public String processRegistration(@RequestPart() Part profilePicture, @Valid Spitter spitter, Errors errors, RedirectAttributes model) {
-		
+	public String processRegistration(@RequestPart() Part profilePicture, @Valid Spitter spitter, Errors errors, RedirectAttributes model) {		
 		if (errors.hasErrors()) {
 			return "registerForm";
 		}
 		
-		try {
-			profilePicture.write("/data/spittr/" + profilePicture.getSubmittedFileName());
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (profilePicture != null) {
+			try {
+				profilePicture.write("/data/spittr/" + profilePicture.getSubmittedFileName());
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		}
+		//secure the password and for now enable useage. This will probably be corrected with email response
+		spitter.setPassword(SecurityConfig.SPE.encode(spitter.getPassword()));
+		spitter.setEnabled(Boolean.TRUE);
 		spitterRepository.save(spitter);
+		
+		Authorities spitterAuth = new Authorities();
+    	spitterAuth.setUsername(spitter.getUsername());
+    	spitterAuth.setAuthority("ROLE_USER");
+		authoritiesRepository.saveAndFlush(spitterAuth);
+		
 		model.addAttribute("username", spitter.getUsername());
 		model.addFlashAttribute("spitter", spitter);
 		return "redirect:/spitters/{username}";

@@ -1,14 +1,13 @@
 package spittr.app;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import spittr.config.DataConfig;
 import spittr.config.SecurityConfig;
 import spittr.entities.Authorities;
-import spittr.entities.User;
+import spittr.entities.Spitter;
 import spittr.repositories.AuthoritiesRepository;
-import spittr.repositories.UserRepository;
+import spittr.repositories.SpitterRepository;
 
 public class DataPrimer {
 
@@ -20,22 +19,37 @@ public class DataPrimer {
         ctx.register(DataConfig.class);
         ctx.refresh();
         
-        UserRepository userRepository = (UserRepository)ctx.getBean("userRepository");
+        SpitterRepository spitterRepository = (SpitterRepository)ctx.getBean("spitterRepository");
         AuthoritiesRepository authoritiesRepository = (AuthoritiesRepository)ctx.getBean("authoritiesRepository");
 		
-		StandardPasswordEncoder spe = new StandardPasswordEncoder(SecurityConfig.ENC);		
-		User admin = new User();
-    	admin.setUsername("admin");
-    	admin.setFirstName("Admin");
-    	admin.setLastName("God");
-    	admin.setPassword(spe.encode(admin.getUsername()));
-    	admin.setEnabled(Boolean.TRUE);
-    	userRepository.saveAndFlush(admin);
+//		StandardPasswordEncoder spe = new StandardPasswordEncoder(SecurityConfig.ENC);		
+//		User admin = new User();
+//    	admin.setUsername("admin");
+//    	admin.setFirstName("Admin");
+//    	admin.setLastName("God");
+//    	admin.setPassword(spe.encode(admin.getUsername()));
+//    	admin.setEnabled(Boolean.TRUE);
+//    	userRepository.saveAndFlush(admin);
+//    	
+//    	Authorities adminAuth = new Authorities();
+//		adminAuth.setUsername(admin.getUsername());
+//		adminAuth.setAuthority("ROLE_ADMIN");
+//		authoritiesRepository.saveAndFlush(adminAuth);
+    	
+    	Spitter spitter = new Spitter();
+    	spitter.setUsername("spitter@gmail.com");
+    	spitter.setEmail(spitter.getUsername());
+    	spitter.setFirstName("Spitter");
+    	spitter.setLastName("Face");
+    	spitter.setPassword(SecurityConfig.SPE.encode("ethjil00"));
+    	spitter.setEnabled(Boolean.TRUE);
+    	spitterRepository.saveAndFlush(spitter);
 
-		Authorities adminAuth = new Authorities();
-		adminAuth.setUsername("admin");
-		adminAuth.setAuthority("ROLE_ADMIN");
-		authoritiesRepository.saveAndFlush(adminAuth);
+    	Authorities spitterAuth = new Authorities();
+    	spitterAuth.setUsername(spitter.getUsername());
+    	spitterAuth.setAuthority("ROLE_USER");
+		authoritiesRepository.saveAndFlush(spitterAuth);
+		
 
     	ctx.close();
 

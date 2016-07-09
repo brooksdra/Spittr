@@ -21,13 +21,13 @@ public class Spitter {
 	private Long id;
 
 	@NotNull
-	@Size(min = 5, max = 16, message="{username.size}")
-	@Column(name = "username", nullable = false, unique = true, length = 16)
+	@Size(min = 5, max = 128, message="{username.size}")
+	@Column(name = "username", nullable = false, unique = true, length = 128)
 	private String username;
 
 	@NotNull
-	@Size(min=5, max=25, message="{password.size}")
-	@Column(name = "password", nullable = false, length = 25)
+	@Size(min=5, max=255, message="{password.size}")
+	@Column(name = "password", nullable = false, length = 255)
 	private String password;
 
 	@NotNull
@@ -45,6 +45,10 @@ public class Spitter {
 	@Column(name = "email", nullable = false, length = 128)
 	private String email;
 
+	// @Column(columnDefinition="TINYINT NOT NULL DEFAULT 1")
+	@Column(name = "enabled", nullable = false)
+	private Boolean enabled;
+	
 	public Spitter() {
 	}
 
@@ -107,6 +111,14 @@ public class Spitter {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@Override

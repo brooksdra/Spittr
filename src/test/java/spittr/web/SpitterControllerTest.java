@@ -6,29 +6,25 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
-import java.util.List;
 
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
 import spittr.entities.Spitter;
-import spittr.entities.Spittle;
+import spittr.repositories.AuthoritiesRepository;
 import spittr.repositories.SpitterRepository;
-import spittr.repositories.SpittleRepository;
 
 public class SpitterControllerTest {
 
 	@Test
 	public void shouldShowRegistrationPage() throws Exception {
 		SpitterRepository mockRepository = mock(SpitterRepository.class);
-		SpitterController controller = new SpitterController(mockRepository);
+		AuthoritiesRepository mockAuthRepository = mock(AuthoritiesRepository.class);
+		SpitterController controller = new SpitterController(mockRepository, mockAuthRepository);
 		MockMvc mockMvc = standaloneSetup(controller).build();
 		mockMvc.perform(get("/spitter/register")).andExpect(view().name("registerForm"));
 	}
@@ -36,10 +32,11 @@ public class SpitterControllerTest {
 	@Test
 	public void shouldProcessRegistration() throws Exception {
 		SpitterRepository mockRepository = mock(SpitterRepository.class);
+		AuthoritiesRepository mockAuthRepository = mock(AuthoritiesRepository.class);
 		Spitter unsaved = new Spitter("jbauer", "24hours", "Jack", "Bauer", "jbauer@24hours");
 		Spitter saved = new Spitter(24L, "jbauer", "24hours", "Jack", "Bauer", "jbauer@24hours");
 		when(mockRepository.save(unsaved)).thenReturn(saved);
-		SpitterController controller = new SpitterController(mockRepository);
+		SpitterController controller = new SpitterController(mockRepository, mockAuthRepository);
 		MockMvc mockMvc = standaloneSetup(controller).build();
 		mockMvc.perform(post("/spitter/register")
 				.param("firstName", "Jack")
@@ -70,8 +67,9 @@ public class SpitterControllerTest {
 
 		Spitter jbauer = new Spitter(24L, "jbauer", "24hours", "Jack", "Bauer", "jbauer@24hours");
 		SpitterRepository mockRepository = mock(SpitterRepository.class);
+		AuthoritiesRepository mockAuthRepository = mock(AuthoritiesRepository.class);
 	    when(mockRepository.findByUsername("jbauer")).thenReturn(jbauer);
-		SpitterController controller = new SpitterController(mockRepository);
+		SpitterController controller = new SpitterController(mockRepository, mockAuthRepository);
 	    MockMvc mockMvc = standaloneSetup(controller)
 	        .setSingleView(new InternalResourceView("/WEB-INF/pages/profile.jsp"))
 	        .build();
