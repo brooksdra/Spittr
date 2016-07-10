@@ -73,7 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.formLogin()				// activate default login page
-//				.loginPage("/login")    // use a custom login page
+				.loginPage("/login")    // use a custom login page
+			  .and()
+			.httpBasic()
+				.realmName("spittr")
 //			 .and()
 //			.rememberMe()   			// add a remember me capabilities
 //				 .tokenValiditySeconds(2419200) //two weeks
