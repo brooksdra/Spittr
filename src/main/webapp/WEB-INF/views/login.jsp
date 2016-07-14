@@ -2,7 +2,7 @@
 <%@ page session="false" %>
 
 <h3>Login with Username and Password</h3>
-<form name='f' action='/spittr/login' method='POST'>
+<form name='f' action='login' method='POST'>
 	<table>
 	<tr><td>User:</td><td><input type='text' name='username' value=''></td></tr>
 	<tr><td>Password:</td><td><input type='password' name='password'/></td></tr>
